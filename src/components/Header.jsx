@@ -8,7 +8,7 @@ function Header() {
           <img width="38" src={pizzaLogo} alt="Pizza logo" />
           <div>
             <h1>React Pizza</h1>
-            <p>найсмачніша піцца у міжгалактичному просторі</p>
+            <p>найсмачніша піца у міжгалактичному просторі</p>
           </div>
         </div>
         <div className="header__cart">
