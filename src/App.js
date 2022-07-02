@@ -9,18 +9,6 @@ import Skeleton from "./components/SkeletonforPizzaBlock";
 import "./scss/app.scss";
 
 function App() {
-  const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("https://62beda5fbe8ba3a10d5d3961.mockapi.io/items")
-      .then((res) => res.json())
-      .then((arr) => {
-        setItems(arr);
-        setIsLoading(false);
-      });
-  }, []);
-
   return (
     <div className="wrapper">
       <Header />
