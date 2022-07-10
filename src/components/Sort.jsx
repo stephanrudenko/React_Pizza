@@ -1,18 +1,24 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setSortType } from "../redux/slices/filterSlice";
 
-function Sort({ value, onChangeSort }) {
+const list = [
+  { name: "популярності DESC", sortProperty: "rating" },
+  { name: "популярності ASC", sortProperty: "-rating" },
+  { name: "ціні DESC", sortProperty: "price" },
+  { name: "ціні ASC", sortProperty: "-price" },
+  { name: "алфавіту DESC", sortProperty: "title" },
+  { name: "алфавіту ASC", sortProperty: "-title" },
+];
+
+function Sort() {
+  const dispatch = useDispatch();
+  const sort = useSelector((state) => state.filter.sort);
+
   const [isVisible, setIsVisible] = useState(false);
-  const sort = [
-    { name: "популярності DESC", sortProperty: "rating" },
-    { name: "популярності ASC", sortProperty: "-rating" },
-    { name: "ціні DESC", sortProperty: "price" },
-    { name: "ціні ASC", sortProperty: "-price" },
-    { name: "алфавіту DESC", sortProperty: "title" },
-    { name: "алфавіту ASC", sortProperty: "-title" },
-  ];
 
-  const onClickSortPopUp = (index) => {
-    onChangeSort(index);
+  const onClickSortPopUp = (obj) => {
+    dispatch(setSortType(obj));
     setIsVisible(false);
   };
 
@@ -32,17 +38,17 @@ function Sort({ value, onChangeSort }) {
           />
         </svg>
         <b>Сортування по:</b>
-        <span onClick={() => setIsVisible(!isVisible)}>{value.name}</span>
+        <span onClick={() => setIsVisible(!isVisible)}>{sort.name}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">
           <ul>
-            {sort.map((obj, index) => (
+            {list.map((obj, index) => (
               <li
-                key={sort}
+                key={obj.name}
                 onClick={() => onClickSortPopUp(obj)}
                 className={
-                  value.sortProperty === obj.sortProperty ? "active" : ""
+                  sort.sortProperty === obj.sortProperty ? "active" : ""
                 }
               >
                 {obj.name}
