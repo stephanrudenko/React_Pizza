@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { setCategoryId } from "../redux/slices/filterSlice";
+import { setCategoryId, setCurrentPage } from "../redux/slices/filterSlice";
 
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
@@ -10,14 +11,18 @@ import Pagination from "../components/Pagination";
 import { SearchContext } from "../App";
 
 const Home = () => {
-  const { categoryId, sort } = useSelector((state) => state.filter);
-  // const sortType = useSelector((state) => state.filter.sort.sortProperty);
   const dispatch = useDispatch();
+  const { categoryId, sort, currentPage } = useSelector(
+    (state) => state.filter
+  );
 
   const { searchValue } = useContext(SearchContext);
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+
+  // const onChangePage = (number) => {
+  //   dispatch.setCurrentPage(number);
+  // };
 
   useEffect(() => {
     setIsLoading(true);
@@ -25,21 +30,22 @@ const Home = () => {
     const order = sort.sortProperty.includes("-") ? "asc" : "desc";
     const sortBy = sort.sortProperty.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
-    const search = searchValue ? `&search=${searchValue}` : "";
+    const search = searchValue ? `search=${searchValue}` : "";
 
-    fetch(
-      `https://62beda5fbe8ba3a10d5d3961.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-    )
-      .then((res) => res.json())
-      .then((arr) => {
-        setItems(arr);
+    axios
+      .get(
+        `https://62beda5fbe8ba3a10d5d3961.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}&${search}`
+      )
+      .then((Response) => {
+        setItems(Response.data);
         setIsLoading(false);
       });
+
     window.scrollTo(0, 0);
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
-  const skeletons = [...new Array(6)].map((_, index) => (
+  const skeletons = [...new Array(4)].map((_, index) => (
     <Skeleton key={index} />
   ));
 
@@ -54,7 +60,10 @@ const Home = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzas}</div>
-      <Pagination onChangePage={(number) => setCurrentPage(number)} />
+      <Pagination
+        currentPage={currentPage}
+        onChangePage={(number) => dispatch(setCurrentPage(number))}
+      />
     </div>
   );
 };
