@@ -4,7 +4,7 @@ import EmptyCartImg from "../assets/img/empty-cart.png";
 
 const CartEmpty = () => {
   return (
-    <div class="cart cart--empty">
+    <div className="cart cart--empty">
       <h2>
         Кошик порожній <icon>😕</icon>
       </h2>
@@ -14,7 +14,7 @@ const CartEmpty = () => {
         Для того, щоб замовити піцу, перейдіть на головну сторінку.
       </p>
       <img src={EmptyCartImg} alt="Empty cart" />
-      <Link to="/" class="button button--black">
+      <Link to="/" className="button button--black">
         <span>Повернутись на головну</span>
       </Link>
     </div>
