@@ -1,8 +1,9 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  selectFilter,
   setCategoryId,
   setCurrentPage,
   setFilters,
@@ -14,20 +15,16 @@ import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/SkeletonforPizzaBlock";
 import Pagination from "../components/Pagination";
 import { sortList } from "../components/Sort";
-import { SearchContext } from "../App";
-import { fetchPizzas } from "../redux/slices/pizzaSlice";
+import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
 
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isMounted = useRef(false);
 
-  const { items, status } = useSelector((state) => state.pizza);
-  const { categoryId, sort, currentPage } = useSelector(
-    (state) => state.filter
-  );
-
-  const { searchValue } = useContext(SearchContext);
+  const { items, status } = useSelector(selectPizzaData);
+  const { categoryId, sort, currentPage, searchValue } =
+    useSelector(selectFilter);
 
   const getPizzas = async () => {
     const sortBy = sort.sortProperty.replace("-", "");
@@ -122,6 +119,7 @@ const Home = () => {
           {status === "loading" ? skeletons : pizzas}
         </div>
       )}
+
       <Pagination
         currentPage={currentPage}
         onChangePage={(number) => dispatch(setCurrentPage(number))}
