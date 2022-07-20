@@ -1,6 +1,9 @@
 .root {
+  display: flex;
+  justify-content: center;
+
   li {
-    display: inline-flex;
+    display: block;
     margin: 0.2rem;
 
     a {
