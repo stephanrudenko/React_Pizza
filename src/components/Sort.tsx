@@ -2,7 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSort, setSortType } from "../redux/slices/filterSlice";
 
-export const sortList = [
+type SortItem = {
+  name: string;
+  sortProperty: string;
+};
+
+type PopupClickOut = MouseEvent & {
+  path: Node[];
+};
+
+export const sortList: SortItem[] = [
   { name: "популярності DESC", sortProperty: "rating" },
   { name: "популярності ASC", sortProperty: "-rating" },
   { name: "ціні DESC", sortProperty: "price" },
@@ -14,18 +23,19 @@ export const sortList = [
 function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector(selectSort);
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
 
   const [isVisible, setIsVisible] = useState(false);
 
-  const onClickSortPopUp = (obj) => {
+  const onClickSortPopUp = (obj: SortItem) => {
     dispatch(setSortType(obj));
     setIsVisible(false);
   };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.path.includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const _event = event as PopupClickOut;
+      if (sortRef.current && !_event.path.includes(sortRef.current)) {
         setIsVisible(false);
       }
     };

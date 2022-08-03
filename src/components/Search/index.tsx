@@ -5,10 +5,10 @@ import { setSearchValue } from "../../redux/slices/filterSlice";
 import styles from "./Search.module.scss";
 import { useDispatch } from "react-redux";
 
-const Search = () => {
+const Search: React.FC = () => {
   const dispatch = useDispatch();
-  const [value, setValue] = useState("");
-  const inputRef = useRef();
+  const [value, setValue] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const updateSearchValue = useCallback(
     debounce((str) => {
@@ -17,7 +17,7 @@ const Search = () => {
     []
   );
 
-  const onChangeInput = (event) => {
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     updateSearchValue(event.target.value);
   };

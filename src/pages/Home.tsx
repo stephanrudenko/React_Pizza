@@ -17,7 +17,7 @@ import Pagination from "../components/Pagination";
 import { sortList } from "../components/Sort";
 import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
 
-const Home = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isMounted = useRef(false);
@@ -33,6 +33,7 @@ const Home = () => {
     const search = searchValue ? `search=${searchValue}` : "";
 
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         sortBy,
         order,
@@ -91,7 +92,7 @@ const Home = () => {
     isMounted.current = true;
   }, []);
 
-  const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(4)].map((_, index) => (
     <Skeleton key={index} />
   ));
@@ -101,7 +102,7 @@ const Home = () => {
       <div className="content__top">
         <Categories
           value={categoryId}
-          onChangeCategory={(id) => dispatch(setCategoryId(id))}
+          onChangeCategory={(id: number) => dispatch(setCategoryId(id))}
         />
         <Sort />
       </div>
@@ -122,7 +123,7 @@ const Home = () => {
 
       <Pagination
         currentPage={currentPage}
-        onChangePage={(number) => dispatch(setCurrentPage(number))}
+        onChangePage={(page: number) => dispatch(setCurrentPage(page))}
       />
     </div>
   );
