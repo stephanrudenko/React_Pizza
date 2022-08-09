@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   selectFilter,
   setCategoryId,
@@ -16,10 +16,11 @@ import Skeleton from "../components/SkeletonforPizzaBlock";
 import Pagination from "../components/Pagination";
 import { sortList } from "../components/Sort";
 import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
+import { useAppDispatch } from "../redux/store";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isMounted = useRef(false);
 
   const { items, status } = useSelector(selectPizzaData);
@@ -33,7 +34,6 @@ const Home: React.FC = () => {
     const search = searchValue ? `search=${searchValue}` : "";
 
     dispatch(
-      // @ts-ignore
       fetchPizzas({
         sortBy,
         order,
@@ -82,7 +82,7 @@ const Home: React.FC = () => {
       const sort = sortList.find((obj) => obj.sortProperty === params.sortBy);
       dispatch(
         setFilters({
-          searchValue: params.search,
+          searchValue: String(params.search),
           categoryId: Number(params.category),
           currentPage: Number(params.currentPage),
           sort: sort || sortList[0],
