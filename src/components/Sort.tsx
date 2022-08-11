@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useWhyDidYouUpdate } from "ahooks";
 import {
   setSortType,
   Sort,
@@ -32,8 +31,6 @@ export const sortList: SortItem[] = [
 const SortPopup: React.FC<SortPopupProps> = React.memo(({ value }) => {
   const dispatch = useDispatch();
   const sortRef = useRef<HTMLDivElement>(null);
-
-  useWhyDidYouUpdate("SortPopup", { value });
 
   const [isVisible, setIsVisible] = useState(false);
 
