@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useWhyDidYouUpdate } from "ahooks";
 import {
-  selectSort,
   setSortType,
+  Sort,
   SortPropertyEnum,
 } from "../redux/slices/filterSlice";
 
@@ -15,6 +16,10 @@ type PopupClickOut = MouseEvent & {
   path: Node[];
 };
 
+type SortPopupProps = {
+  value: Sort;
+};
+
 export const sortList: SortItem[] = [
   { name: "популярності DESC", sortProperty: SortPropertyEnum.RATING_DESC },
   { name: "популярності ASC", sortProperty: SortPropertyEnum.RATING_ASC },
@@ -24,10 +29,11 @@ export const sortList: SortItem[] = [
   { name: "алфавіту ASC", sortProperty: SortPropertyEnum.TITLE_ASC },
 ];
 
-function SortPopup() {
+const SortPopup: React.FC<SortPopupProps> = React.memo(({ value }) => {
   const dispatch = useDispatch();
-  const sort = useSelector(selectSort);
   const sortRef = useRef<HTMLDivElement>(null);
+
+  useWhyDidYouUpdate("SortPopup", { value });
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -67,7 +73,7 @@ function SortPopup() {
           />
         </svg>
         <b>Сортування по:</b>
-        <span onClick={() => setIsVisible(!isVisible)}>{sort.name}</span>
+        <span onClick={() => setIsVisible(!isVisible)}>{value.name}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">
@@ -77,7 +83,7 @@ function SortPopup() {
                 key={obj.name}
                 onClick={() => onClickSortPopUp(obj)}
                 className={
-                  sort.sortProperty === obj.sortProperty ? "active" : ""
+                  value.sortProperty === obj.sortProperty ? "active" : ""
                 }
               >
                 {obj.name}
@@ -88,6 +94,6 @@ function SortPopup() {
       )}
     </div>
   );
-}
+});
 
 export default SortPopup;

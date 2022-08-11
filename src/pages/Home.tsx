@@ -102,9 +102,12 @@ const Home: React.FC = () => {
       <div className="content__top">
         <Categories
           value={categoryId}
-          onChangeCategory={(id: number) => dispatch(setCategoryId(id))}
+          onChangeCategory={React.useCallback(
+            (id: number) => dispatch(setCategoryId(id)),
+            []
+          )}
         />
-        <Sort />
+        <Sort value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === "error" ? (
