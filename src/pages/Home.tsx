@@ -9,11 +9,14 @@ import {
   setFilters,
 } from "../redux/slices/filterSlice";
 
-import Categories from "../components/Categories";
-import Sort from "../components/Sort";
-import PizzaBlock from "../components/PizzaBlock";
-import Skeleton from "../components/SkeletonforPizzaBlock";
-import Pagination from "../components/Pagination";
+import {
+  Categories,
+  Sort,
+  PizzaBlock,
+  Skeleton,
+  Pagination,
+} from "../components";
+
 import { sortList } from "../components/Sort";
 import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
 import { useAppDispatch } from "../redux/store";
